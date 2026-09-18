@@ -1,0 +1,9 @@
+ansible.cfg
+
+*.vault
+vault.yml
+vault.yaml
+
+.vscode/
+.idea/
+
