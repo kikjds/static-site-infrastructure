@@ -1,0 +1,2 @@
+[debian]
+192.168.1.45 ansible_port=22 ansible_user=debian ansible_ssh_pass=password ansible_become_pass=password
