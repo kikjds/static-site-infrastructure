@@ -1,0 +1,17 @@
+---
+- name: Create user
+  hosts: all
+  become: true
+
+  vars_files:
+    - ../vars/secrets.yaml
+
+  tasks:
+    - name: Create page administrator
+      ansible.builtin.user:
+        name: "{{ username }}"
+        password: "{{ password | ansible.builtin.password_hash('sha512') }}"
+        comment: Page administrator
+        group: sudo
+        append: true
+        create_home: true
