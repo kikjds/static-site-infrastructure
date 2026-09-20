@@ -1,0 +1,11 @@
+---
+- name: Copy page files
+  hosts: all
+  become: true
+  tasks:
+    - name: Copy 
+      ansible.builtin.copy: 
+        src: ../page
+        dest: /var/www
+        force: true
+        mode: '644'
