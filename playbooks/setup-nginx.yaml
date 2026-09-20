@@ -1,0 +1,14 @@
+---
+- name: Configure page config and reload nginx
+  hosts: all
+  become: true
+  tasks:
+    - name: Setup nginx page file
+      ansible.builtin.copy: 
+        src: ../configs/page.conf
+        dest: /etc/nginx/conf.d
+        force: true
+
+    - name: Reload nginx process
+      ansible.builtin.shell:
+        cmd: nginx -s reload
