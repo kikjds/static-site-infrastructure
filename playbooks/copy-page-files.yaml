@@ -3,8 +3,8 @@
   hosts: all
   become: true
   tasks:
-    - name: Copy 
-      ansible.builtin.copy: 
+    - name: Copy
+      ansible.builtin.copy:
         src: ../page
         dest: /var/www
         force: true

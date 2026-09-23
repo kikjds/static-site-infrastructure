@@ -8,13 +8,12 @@
         name: nginx
         state: present
         update_cache: true
-    
     - name: Configure nginx conf
       ansible.builtin.copy:
         src: ../configs/nginx.conf
         dest: /etc/nginx/nginx.conf
         force: true
-
+        mode: '750'
     - name: Delete unnecessary folders
       ansible.builtin.shell:
         chdir: /etc/nginx/

@@ -4,11 +4,12 @@
   become: true
   tasks:
     - name: Setup nginx page file
-      ansible.builtin.copy: 
+      ansible.builtin.copy:
         src: ../configs/page.conf
         dest: /etc/nginx/conf.d
         force: true
-
+        mode: '750'
     - name: Reload nginx process
-      ansible.builtin.shell:
-        cmd: nginx -s reload
+      ansible.builtin.systemd_service:
+        name: nginx
+        state: reloaded
