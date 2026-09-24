@@ -1,0 +1,21 @@
+name: Check ansible with lint
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  Check-ansible-syntax:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@7
+      - name: Run ansible lint check
+        uses: ansible/ansible-lint@main
+    
+  
