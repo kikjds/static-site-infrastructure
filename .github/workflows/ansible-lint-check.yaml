@@ -15,5 +15,19 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
+
+      - name: Create Vault password file
+        env:
+          VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
+        run: |
+          umask 077
+          printf '%s' "$VAULT_PASSWORD" > .vault-password
+
       - name: Run ansible lint check
         uses: ansible/ansible-lint@main
+        env:
+          ANSIBLE_VAULT_PASSWORD_FILE: ${{ github.workspace }}/.vault-password
+
+      - name: Remove Vault password file
+        if: always()
+        run: rm -f .vault-password
