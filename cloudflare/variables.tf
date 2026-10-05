@@ -13,3 +13,8 @@ variable "DOMAIN_NAME" {
   type        = string
   description = "Name of domain"
 }
+
+variable "SERVER_ADDRESS" {
+  type = string
+  description = "Origin server ip address"
+}
