@@ -12,7 +12,8 @@ resource "cloudflare_dns_record" "root_a" {
   name    = "@"
   content = var.SERVER_ADDRESS
   type    = "A"
-  ttl     = 3600
+  ttl     = 1
+  proxied = true
 }
 
 resource "tls_private_key" "origin" {
@@ -33,4 +34,10 @@ resource "cloudflare_origin_ca_certificate" "origin" {
   hostnames          = [var.DOMAIN_NAME, "*.${var.DOMAIN_NAME}"]
   request_type       = "origin-rsa"
   requested_validity = 5475
+}
+
+resource "cloudflare_zone_setting" "ssl" {
+  zone_id    = cloudflare_zone.domain.id
+  setting_id = "ssl"
+  value      = "strict"
 }
