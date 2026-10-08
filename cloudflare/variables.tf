@@ -14,7 +14,12 @@ variable "DOMAIN_NAME" {
   description = "Name of domain"
 }
 
-variable "SERVER_ADDRESS" {
-  type = string
-  description = "Origin server ip address"
+variable "IPV4_SERVER_ADDRESS" {
+  type        = string
+  description = "Origin server ipv4 address"
+}
+
+variable "IPV6_SERVER_ADDRESS" {
+  type        = string
+  description = "Origin server ipv6 address"
 }

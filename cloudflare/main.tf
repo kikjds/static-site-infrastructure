@@ -10,8 +10,17 @@ resource "cloudflare_zone" "domain" {
 resource "cloudflare_dns_record" "root_a" {
   zone_id = cloudflare_zone.domain.id
   name    = "@"
-  content = var.SERVER_ADDRESS
+  content = var.IPV4_SERVER_ADDRESS
   type    = "A"
+  ttl     = 1
+  proxied = true
+}
+
+resource "cloudflare_dns_record" "root_aaa" {
+  zone_id = cloudflare_zone.domain.id
+  name    = "@"
+  content = var.IPV6_SERVER_ADDRESS
+  type    = "AAA"
   ttl     = 1
   proxied = true
 }
@@ -40,4 +49,4 @@ resource "cloudflare_zone_setting" "ssl" {
   zone_id    = cloudflare_zone.domain.id
   setting_id = "ssl"
   value      = "strict"
-}
+} 
