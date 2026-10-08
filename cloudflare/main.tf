@@ -20,7 +20,7 @@ resource "cloudflare_dns_record" "root_aaa" {
   zone_id = cloudflare_zone.domain.id
   name    = "@"
   content = var.IPV6_SERVER_ADDRESS
-  type    = "AAA"
+  type    = "AAAA"
   ttl     = 1
   proxied = true
 }
