@@ -1,10 +1,11 @@
 # Static Site Infrastructure
 
-Ansible automation for deploying a static website on a Debian-based Linux server with Nginx. TLS certificates and Cloudflare.
+Terraform and Ansible automation for deploying a static website on a Debian-based Linux server with Nginx, including Cloudflare Origin CA TLS certificates.
 
 ## Prerequisites
 
 - Ansible installed on the control machine.
+- Terraform installed on the control machine.
 - The Ansible collections declared in `collections/requirements.yml`, installed with:
 
   ```sh
@@ -12,7 +13,7 @@ Ansible automation for deploying a static website on a Debian-based Linux server
   ```
 
 - SSH access with sudo privileges to a Debian-based target server.
-- TLS certificate and private key already available on the target server at `/etc/nginx/ssl/cert.pem` and `/etc/nginx/ssl/cert.key`.
+- Cloudflare credentials and the target server IP address exported as Terraform input variables (for example, `TF_VAR_CLOUDFLARE_API_TOKEN`, `TF_VAR_CLOUDFLARE_ACCOUNT_ID`, and `TF_VAR_IPV4_SERVER_ADDRESS`).
 - Port `443` open in the server firewall and, when applicable, in the cloud provider firewall.
 
 ## Setup
@@ -34,13 +35,11 @@ Update the static site files in `page/`. Adjust `configs/page.conf` when the doc
 
 ## Deployment
 
-Run the playbooks in this order. The first command uses the existing administrator credentials from `inventory.ini`; subsequent commands can use the newly created account after updating the inventory.
+Make the deployment script executable and run it:
 
 ```sh
-ansible-playbook playbooks/create-user.yaml
-ansible-playbook playbooks/install-nginx.yaml
-ansible-playbook playbooks/copy-page-files.yaml
-ansible-playbook playbooks/setup-nginx.yaml
+chmod +x deploy.sh
+./deploy.sh
 ```
 
-The last playbook installs the virtual-host configuration and reloads Nginx. Verify the deployment by opening `https://<server-address>`.
+Verify the deployment by opening `https://<domain-name>`.
