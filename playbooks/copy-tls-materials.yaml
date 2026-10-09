@@ -1,0 +1,42 @@
+---
+- name: Deploy TLS materials to VM
+  hosts: all
+  become: true
+  tasks:
+    - name: Validate TLS materials are available
+      ansible.builtin.assert:
+        that:
+          - lookup('ansible.builtin.env', 'TLS_CERTIFICATE_PEM') | length > 0
+          - lookup('ansible.builtin.env', 'TLS_PRIVATE_KEY_PEM') | length > 0
+        fail_msg: TLS certificate or private key was not supplied through the environment.
+      no_log: true
+    - name: Create Nginx TLS directory
+      ansible.builtin.file:
+        path: /etc/nginx/ssl
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+    - name: Copy TLS certificate
+      ansible.builtin.copy:
+        content: "{{ lookup('ansible.builtin.env', 'TLS_CERTIFICATE_PEM') }}"
+        dest: /etc/nginx/ssl/cert.pem
+        owner: root
+        group: root
+        mode: '0644'
+    - name: Copy TLS private key
+      ansible.builtin.copy:
+        content: "{{ lookup('ansible.builtin.env', 'TLS_PRIVATE_KEY_PEM') }}"
+        dest: /etc/nginx/ssl/cert.key
+        owner: root
+        group: root
+        mode: '0600'
+      no_log: true
+      notify:
+        - Restart nginx service
+
+  handlers:
+    - name: Restart nginx service
+      ansible.builtin.systemd_service:
+        name: nginx
+        state: reloaded
