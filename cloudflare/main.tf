@@ -49,4 +49,31 @@ resource "cloudflare_zone_setting" "ssl" {
   zone_id    = cloudflare_zone.domain.id
   setting_id = "ssl"
   value      = "strict"
-} 
+}
+
+resource "cloudflare_ruleset" "rate_limiting" {
+  zone_id     = cloudflare_zone.domain.id
+  name        = "Global rate limiting"
+  description = "Protect the whole website"
+  kind        = "zone"
+  phase       = "http_ratelimit"
+
+  rules = [{
+    action      = "block"
+    description = "Request limit per IP"
+    expression  = "true"
+    enabled     = true
+
+    ratelimit = {
+      characteristics     = ["cf.colo.id", "ip.src"]
+      period              = 60
+      requests_per_period = 320
+      mitigation_timeout  = 60
+
+      mitigation_action = {
+        action = "block"
+      }
+    }
+  }]
+}
+
