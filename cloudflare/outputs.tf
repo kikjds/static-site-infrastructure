@@ -9,6 +9,6 @@ output "origin_certificate_pem" {
 }
 
 output "origin_private_key_pem" {
-  value     = tls.tls_private_key.origin.private_key_pem
+  value     = tls_private_key.origin.private_key_pem
   sensitive = true
 }
