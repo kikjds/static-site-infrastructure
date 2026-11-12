@@ -35,11 +35,27 @@ Update the static site files in `page/`. Adjust `configs/page.conf` when the doc
 
 ## Deployment
 
+Cloudflare must activate a domain before it can issue an Origin CA certificate. Run the deployment in two separate stages.
+
+### 1. Add the domain to Cloudflare
+
+Create only the Cloudflare zone and print its authoritative name servers:
+
 Make the deployment script executable and run it:
 
 ```sh
 chmod +x deploy.sh
-./deploy.sh
+./deploy.sh add-domain
+```
+
+Set the printed name servers at the domain registrar. Wait until the zone shows as **Active** in Cloudflare.
+
+### 2. Configure the website
+
+After Cloudflare activates the zone, configure the DNS records, Origin CA TLS certificate, Nginx, user access, and static site:
+
+```sh
+./deploy.sh deploy
 ```
 
 Verify the deployment by opening `https://<domain-name>`.
